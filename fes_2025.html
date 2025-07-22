@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中央小フェス2025参加希望リスト</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0056b3;
+        }
+
+        #data-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* PC閲覧時: リスト形式 */
+        .list-table {
+            width: 100%;
+            border-collapse: collapse;
+            display: table; /* PCではテーブルとして表示 */
+        }
+
+        .list-table th, .list-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .list-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        /* ★ここから追加・修正: 各列の幅を指定 */
+        /* 例: 最初の列（タイムスタンプ/登録日時）の幅を広くする */
+        .list-table th:nth-child(1),
+        .list-table td:nth-child(1) {
+            width: 8.3%; /* 例: 120ピクセル */
+        }
+
+        .list-table th:nth-child(2),
+        .list-table td:nth-child(2) {
+            width: 7%; /* 例: 120ピクセル */
+        }
+
+        .list-table th:nth-child(3),
+        .list-table td:nth-child(3) {
+            width: 6%; /* 例: 120ピクセル */
+        }
+
+        .list-table th:nth-child(4),
+        .list-table td:nth-child(4) {
+            width: 10%; /* 例: 120ピクセル */
+        }
+
+        .list-table th:nth-child(5),
+        .list-table td:nth-child(5) {
+            width: 10.5%; /* 例: 120ピクセル */
+        }
+
+        .list-table th:nth-child(6),
+        .list-table td:nth-child(6) {
+            width: 10.5%; /* 例: 120ピクセル */
+        }
+
+        .list-table th:nth-child(7),
+        .list-table td:nth-child(7) {
+            width: 5%; /* 例: 120ピクセル */
+        }
+
+        .list-table th:nth-child(8),
+        .list-table td:nth-child(8) {
+            width: 10%; /* 例: 120ピクセル */
+        }
+
+        .list-table th:nth-child(9),
+        .list-table td:nth-child(9) {
+            width: 15%; /* 例: 120ピクセル */
+        }
+
+        .list-table th:nth-child(10),
+        .list-table td:nth-child(10) {
+            width: 5%; /* 例: 120ピクセル */
+        }
+
+        .list-table th:nth-child(11),
+        .list-table td:nth-child(11) {
+            width: 12.7%; /* 例: 120ピクセル */
+        }
+
+        /* スマホ閲覧時: カード形式 */
+        .card-grid {
+            display: none; /* 初期状態では非表示 */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 10px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #F0FAE9;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .card p {
+            margin: 5px 0;
+        }
+
+        .card strong {
+            color: #0056b3;
+        }
+
+        /* レスポンシブ対応 */
+        @media (max-width: 768px) {
+          h1 {
+          font-size: 24px;
+           }
+            .list-table {
+                display: none; /* スマホではリスト形式を非表示 */
+            }
+            .card-grid {
+                display: grid; /* スマホではカード形式を表示 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>中央小フェス2025参加希望リスト</h1>
+    <div id="data-container">
+        <p>データを読み込み中...</p>
+    </div>
+
+    <script>
+        // ここにデプロイしたウェブアプリのURLを貼り付けてください
+        const SPREADSHEET_API_URL = 'https://script.google.com/macros/s/AKfycbxDuLnRDOpFyCUw2MCt3Jxq5Vfpcjkre-wBEHMzj8LjeMJHysg3H9SxXCNm4Ikg21LB/exec'; 
+
+        async function fetchData() {
+            try {
+                const response = await fetch(SPREADSHEET_API_URL);
+                const data = await response.json();
+
+                const dataContainer = document.getElementById('data-container');
+                dataContainer.innerHTML = ''; // ローディングメッセージをクリア
+
+                if (data.length === 0) {
+                    dataContainer.innerHTML = '<p>表示するデータがありません。</p>';
+                    return;
+                }
+
+                // ヘッダーを取得 (最初のオブジェクトのキーを使用)
+                const headers = Object.keys(data[0]);
+
+                // PC向けリスト表示
+                const table = document.createElement('table');
+                table.classList.add('list-table');
+
+                const thead = document.createElement('thead');
+                const headerRow = document.createElement('tr');
+                headers.forEach(headerText => {
+                    const th = document.createElement('th');
+                    th.textContent = headerText;
+                    headerRow.appendChild(th);
+                });
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+
+                const tbody = document.createElement('tbody');
+                data.forEach(rowData => {
+                    const tr = document.createElement('tr');
+                    headers.forEach(headerText => {
+                        const td = document.createElement('td');
+                        td.textContent = rowData[headerText];
+                        tr.appendChild(td);
+                    });
+                    tbody.appendChild(tr);
+                });
+                table.appendChild(tbody);
+                dataContainer.appendChild(table);
+
+                // スマホ向けカード表示
+                const cardGrid = document.createElement('div');
+                cardGrid.classList.add('card-grid');
+
+                data.forEach(rowData => {
+                    const card = document.createElement('div');
+                    card.classList.add('card');
+
+                    headers.forEach(headerText => {
+                        const p = document.createElement('p');
+                        p.innerHTML = `<strong>${headerText}:</strong> ${rowData[headerText]}`;
+                        card.appendChild(p);
+                    });
+                    cardGrid.appendChild(card);
+                });
+                dataContainer.appendChild(cardGrid);
+
+            } catch (error) {
+                console.error('データの取得中にエラーが発生しました:', error);
+                document.getElementById('data-container').innerHTML = '<p style="color: red;">データの読み込みに失敗しました。時間をおいて再度お試しください。</p>';
+            }
+        }
+
+        fetchData();
+    </script>
+</body>
+</html>
